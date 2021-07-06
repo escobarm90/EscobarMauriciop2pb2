@@ -5,10 +5,11 @@ import java.util.HashSet;
 
 public class Partido {
 	
-	private static Integer contador;
+	private static Integer contador = 1;
 	private Integer nroDePartido;
 	private Equipo local;
 	private Equipo visitante;
+	private HashSet<Dt> dts;
 	private HashSet<Jugador> nominaLocal;
 	private HashSet<Jugador> nominaVisitante;
 	private ArrayList<Gol> goles;
@@ -45,6 +46,10 @@ public class Partido {
 
 	public HashSet<Jugador> getNominaVisitante() {
 		return nominaVisitante;
+	}
+	
+	public HashSet<Dt> getDts(){
+		return dts;
 	}
 
 	public ArrayList<Gol> getGoles() {
