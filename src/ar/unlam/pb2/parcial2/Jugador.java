@@ -12,4 +12,14 @@ public class Jugador extends Miembro {
 		
 	}
 
+	public Integer getNroCamiseta() {
+		return nroCamiseta;
+	}
+
+	public String getPosicion() {
+		return posicion;
+	}
+	
+	
+
 }
