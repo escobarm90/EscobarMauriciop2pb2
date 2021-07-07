@@ -12,21 +12,22 @@ public class Torneo {
 	
 	public Torneo(String nombre) {
 		this.nombre = nombre;
-		miembros = new HashSet<>();
+		miembros = new HashSet<Miembro>();
+		partidos = new HashSet<Partido>();
 	}
-	
-	public Boolean agregarJugador(Jugador jugador){			
-	 	return miembros.add(jugador);						
-		}	
-	
+		
 	public HashSet<Miembro> getJugadores() {
 		return miembros;
+	}
+	
+	public void agregarPartido(Partido partido) {
+		partidos.add(partido);
 	}
 	
 	
 	public void agregarMiembro(Miembro miembro)throws Exception {
 		for(Partido partidoBuscado: partidos) {
-			if(partidoBuscado.getNominaLocal().contains(miembro) == true && partidoBuscado.getNominaVisitante().contains(miembro) == true) {
+			if(partidoBuscado.getNominaLocal().contains(miembro) == true || partidoBuscado.getNominaVisitante().contains(miembro) == true) {
 				miembros.add(miembro);				
 				}
 			else throw new JugadorNoEncontradoException("Jugador no existente");

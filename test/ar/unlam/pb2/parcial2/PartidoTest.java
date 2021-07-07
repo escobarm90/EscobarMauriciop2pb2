@@ -2,6 +2,8 @@ package ar.unlam.pb2.parcial2;
 
 import static org.junit.Assert.assertEquals;
 
+import java.util.ArrayList;
+
 import org.junit.Test;
 
 import ar.unlam.pb2.parcial2.esceptions.JugadorNoEncontradoException;
@@ -10,18 +12,21 @@ public class PartidoTest {
 	
 	
 	@Test
-	public void queSePuedanRegistrarMiembrosAlTorneo() {
+	public void queSePuedanRegistrarMiembrosAlTorneo() throws Exception {
 		Jugador gonzalo = new Jugador("Gonzalo","Montiel",1111 ,4,"DEF","Argentina");
 		Jugador guillermo = new Jugador("Guillermo","Maripan",2222 ,5,"DEF","Chile");	
-		Equipo argentina = new Equipo("Argentina");
-		Equipo chile = new Equipo("Chile");
-		Partido nuevo = new Partido(argentina,chile,1);
-		Partido nuevo2 = new Partido(argentina,chile,1);
-		Partido nuevo3 = new Partido(argentina, chile,3);
+		Partido nuevoPartido = new Partido("Argentina", "Chile");
+		Partido nuevo2 = new Partido("argentina","chile");
+		Partido nuevo3 = new Partido("argentina", "chile");
 		Torneo nuevoTorneo = new Torneo("Copa America");
 		
-		nuevoTorneo.agregarJugador(gonzalo);
-		nuevoTorneo.agregarJugador(guillermo);
+		nuevoPartido.agregarJugadorLocal(guillermo);
+		nuevoPartido.agregarJugadorVisitante(gonzalo);
+		
+		nuevoTorneo.agregarPartido(nuevoPartido);
+		
+		nuevoTorneo.agregarMiembro(gonzalo);
+		nuevoTorneo.agregarMiembro(guillermo);
 		
 		
 		Integer ve = 2;
@@ -30,33 +35,104 @@ public class PartidoTest {
 	}
 	
 	@Test(expected=JugadorNoEncontradoException.class)
-	public void queSeLanceUnaEXcepcionSiElJugadorNoExiste()throws Exception {
-		Miembro gonzalo = new Jugador("Gonzalo","Montiel",1111 ,4,"DEF","Argentina");
-		Miembro guillermo = new Jugador("Guillermo","Maripan",2222 ,5,"DEF","Chile");	
-		Equipo argentina = new Equipo("Argentina");
-		Equipo chile = new Equipo("Chile");
-		equipo.
-		Partido nuevo = new Partido(argentina,chile,1);
-		Partido nuevo2 = new Partido(argentina,chile,1);
-		Partido nuevo3 = new Partido(argentina, chile,3);
+	public void queSeLanceUnaExcepcionSiElJugadorNoEstaEnLaNomina() throws Exception {
+		Jugador gonzalo = new Jugador("Gonzalo","Montiel",1111 ,4,"DEF","Argentina");
+		Jugador guillermo = new Jugador("Guillermo","Maripan",2222 ,5,"DEF","Chile");	
+		Partido nuevoPartido = new Partido("Argentina", "Chile");
+		Partido nuevo2 = new Partido("argentina","chile");
+		Partido nuevo3 = new Partido("argentina", "chile");
 		Torneo nuevoTorneo = new Torneo("Copa America");
 		
+	
+		nuevoPartido.agregarJugadorVisitante(gonzalo);
+		
+		nuevoTorneo.agregarPartido(nuevoPartido);
+		
 		nuevoTorneo.agregarMiembro(gonzalo);
-		nuevoTorneo.agregarMiembro(marcelo);
+		nuevoTorneo.agregarMiembro(guillermo);
+		
+		
+		Integer ve = 2;
+		assertEquals(ve,nuevoTorneo.getJugadores().size(),0.01);
+		
 	}
 	
 	@Test
-	public void queSePuedanRegistrarLosPartidosAlTorneo() {
-	Jugador gonzalo = new Jugador("Gonzalo","Montiel",1111 ,4,"DEF","Argentina");
-	Miembro guillermo = new Jugador("Guillermo","Maripan",2222 ,5,"DEF","Chile");
-	Dt lionel = new Dt("Lionel","Scaloni" ,88888,"Argentina",45);
-	Miembro martin = new Dt("Martin","Lasarte",9999 ,"Chile",50);
-	Equipo argentina = new Equipo("Argentina");
-	Equipo chile = new Equipo("Chile");
-	Partido nuevo = new Partido(argentina,chile,1);
-	Partido nuevo2 = new Partido(argentina,chile,1);
-	Partido nuevo3 = new Partido(argentina, chile,3);
-	
-
+	public void queSeRegistrenLosGolesCorrectamente() throws Exception {
+		Jugador gonzalo = new Jugador("Gonzalo","Montiel",1111 ,4,"DEF","Argentina");
+		Jugador guillermo = new Jugador("Guillermo","Maripan",2222 ,5,"DEF","Chile");	
+		Partido nuevoPartido = new Partido("Argentina", "Chile");
+		Torneo nuevoTorneo = new Torneo("Copa America");
+		
+		nuevoPartido.agregarJugadorLocal(guillermo);
+		nuevoPartido.agregarJugadorVisitante(gonzalo);
+		
+		nuevoTorneo.agregarPartido(nuevoPartido);
+		
+		nuevoTorneo.agregarMiembro(gonzalo);
+		nuevoTorneo.agregarMiembro(guillermo);		
+		Integer ve = 2;
+		assertEquals(ve,nuevoTorneo.getJugadores().size(),0.01);
+		
+		nuevoPartido.registrarGol(4, 90, "Local");
+		
+		assertEquals(nuevoPartido.getGol().toString(), "[Jugador 4 min 90]");	
+		
 	}
+	
+	@Test
+	public void queSeInformeUnGanadorPerdedorOEmpate()throws Exception {
+		Jugador gonzalo = new Jugador("Gonzalo","Montiel",1111 ,4,"DEF","Argentina");
+		Jugador guillermo = new Jugador("Guillermo","Maripan",2222 ,5,"DEF","Chile");	
+		Partido nuevoPartido = new Partido("Argentina", "Chile");
+		Torneo nuevoTorneo = new Torneo("Copa America");
+		
+		nuevoPartido.agregarJugadorLocal(guillermo);
+		nuevoPartido.agregarJugadorVisitante(gonzalo);
+		
+		nuevoTorneo.agregarPartido(nuevoPartido);
+		
+		nuevoTorneo.agregarMiembro(gonzalo);
+		nuevoTorneo.agregarMiembro(guillermo);		
+		Integer ve = 2;
+		assertEquals(ve,nuevoTorneo.getJugadores().size(),0.01);
+		
+		nuevoPartido.registrarGol(4, 90, "Local");
+		
+		assertEquals("Local",nuevoPartido.getGanador());
+	}
+	
+	@Test
+	public void obtenerUnaListaDeGolesOrdenadaCronologicamente()throws Exception {
+		
+		Jugador gonzalo = new Jugador("Gonzalo","Montiel",1111 ,4,"DEF","Argentina");
+		Jugador guillermo = new Jugador("Guillermo","Maripan",2222 ,5,"DEF","Chile");	
+		Partido nuevoPartido = new Partido("Argentina", "Chile");
+		Torneo nuevoTorneo = new Torneo("Copa America");
+		
+		nuevoPartido.agregarJugadorLocal(guillermo);
+		nuevoPartido.agregarJugadorVisitante(gonzalo);
+		
+		nuevoTorneo.agregarPartido(nuevoPartido);
+		
+		nuevoTorneo.agregarMiembro(gonzalo);
+		nuevoTorneo.agregarMiembro(guillermo);		
+		Integer ve = 2;
+		assertEquals(ve,nuevoTorneo.getJugadores().size(),0.01);
+		
+		nuevoPartido.registrarGol(4, 5, "Local");
+		nuevoPartido.registrarGol(4, 10, "Visitante");
+		nuevoPartido.registrarGol(4, 20, "Local");
+		nuevoPartido.registrarGol(4, 40, "Local");
+		
+		
+		
+		assertEquals(nuevoPartido.presentarGolesCronologicamente(),"[Jugador 4 min 5, Jugador 4 min 10, Jugador 4 min 20, Jugador 4 min 40]");
+	}
+	
+	
+	
+	
+	
+	
 }

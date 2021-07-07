@@ -1,28 +1,39 @@
 package ar.unlam.pb2.parcial2;
 
 import java.util.ArrayList;
+import java.util.Collections;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map;
+import java.util.TreeMap;
 
 public class Partido {
-	
+	public static Integer contadorGoles = 0;
+	private static Integer contador = 1;
 	private Integer nroDePartido;
-	private Equipo local;
-	private Equipo visitante;
-	private HashSet<Dt> dts;
+	private String equipoLocal;
+	private String equipoVisitante;	
 	private HashSet<Jugador> nominaLocal;
 	private HashSet<Jugador> nominaVisitante;
 	private ArrayList<Gol> goles;
+	private Integer golesVisitante = 0;
+	private Integer golesLocal = 0;
+	private Integer nroDeGoles = 0;
 	
-	public Partido(Equipo local, Equipo visitante, Integer nroDePartido) {
-		this.local = local;
-		this.visitante = visitante;
-		this.nroDePartido = nroDePartido;
-		
+	public Partido(String local, String visitante) {
+		this.nominaLocal = new HashSet<Jugador>();
+		this.nominaVisitante = new HashSet<Jugador>();
+		this.goles = new ArrayList<Gol>();
+		this.equipoLocal = local;
+		this.equipoVisitante = visitante;		
+		this.nroDePartido = contador;
+		contador++;
 	}
 	
-	public Boolean registrarGol(Integer nroDeCamiseta, Integer minuto, String localOVisitante) {
+	public void registrarGol(Integer nroDeCamiseta, Integer minuto, String localOVisitante) {
 		Gol nuevo = new Gol(nroDeCamiseta,minuto,localOVisitante);
-		return goles.add(nuevo);
+		goles.add(nuevo);
+		contadorGoles++;
 	}
 	
 	public void agregarJugadorLocal( Jugador jugador) {
@@ -38,12 +49,12 @@ public class Partido {
 		return nroDePartido;
 	}
 
-	public Equipo getLocal() {
-		return local;
+	public String getLocal() {
+		return equipoLocal;
 	}
 
-	public Equipo getVisitante() {
-		return visitante;
+	public String getVisitante() {
+		return equipoVisitante;
 	}
 
 	public HashSet<Jugador> getNominaLocal() {
@@ -54,13 +65,35 @@ public class Partido {
 		return nominaVisitante;
 	}
 	
-	public HashSet<Dt> getDts(){
-		return dts;
-	}
-
-	public ArrayList<Gol> getGoles() {
+	public ArrayList<Gol> getGol() {
 		return goles;
 	}
+	
+	
+	
+	public void getGoles() {
+		for(Gol gol: goles) {
+			if(gol.getGoleador().equals("Visitante")) {
+				golesVisitante++;
+		}else if(gol.getGoleador().equals("Local")){
+				golesLocal++;
+				}
+			}
+		}
+	
+	public String getGanador() {
+		getGoles();
+		if(golesVisitante>golesLocal) {
+			return "Visitante";
+	}else if (golesVisitante<golesLocal) {
+		return "Local";}
+	else return "Empate";
+		}
+	
+	public String presentarGolesCronologicamente(){
+		return getGol().toString();
+	}
+	
 
 	@Override
 	public int hashCode() {
