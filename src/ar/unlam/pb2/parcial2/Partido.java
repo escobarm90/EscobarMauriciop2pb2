@@ -5,7 +5,6 @@ import java.util.HashSet;
 
 public class Partido {
 	
-	private static Integer contador = 1;
 	private Integer nroDePartido;
 	private Equipo local;
 	private Equipo visitante;
@@ -14,11 +13,11 @@ public class Partido {
 	private HashSet<Jugador> nominaVisitante;
 	private ArrayList<Gol> goles;
 	
-	public Partido(Equipo local, Equipo visitante) {
+	public Partido(Equipo local, Equipo visitante, Integer nroDePartido) {
 		this.local = local;
 		this.visitante = visitante;
-		this.nroDePartido = contador;
-		contador++;
+		this.nroDePartido = nroDePartido;
+		
 	}
 	
 	public Boolean registrarGol(Integer nroDeCamiseta, Integer minuto, String localOVisitante) {
