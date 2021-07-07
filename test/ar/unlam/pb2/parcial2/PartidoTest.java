@@ -35,6 +35,7 @@ public class PartidoTest {
 		Miembro guillermo = new Jugador("Guillermo","Maripan",2222 ,5,"DEF","Chile");	
 		Equipo argentina = new Equipo("Argentina");
 		Equipo chile = new Equipo("Chile");
+		equipo.
 		Partido nuevo = new Partido(argentina,chile,1);
 		Partido nuevo2 = new Partido(argentina,chile,1);
 		Partido nuevo3 = new Partido(argentina, chile,3);

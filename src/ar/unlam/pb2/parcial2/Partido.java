@@ -24,7 +24,14 @@ public class Partido {
 		Gol nuevo = new Gol(nroDeCamiseta,minuto,localOVisitante);
 		return goles.add(nuevo);
 	}
-		
+	
+	public void agregarJugadorLocal( Jugador jugador) {
+		nominaLocal.add(jugador);
+	}
+	
+	public void agregarJugadorVisitante(Jugador jugador) {
+		nominaVisitante.add(jugador);
+	}
 	
 
 	public Integer getNroDePartido() {
